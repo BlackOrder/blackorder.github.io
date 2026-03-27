@@ -1,0 +1,9 @@
+# Claude Code context
+CLAUDE.md
+.claude/
+docs/
+spec/
+
+# OS files
+.DS_Store
+Thumbs.db
