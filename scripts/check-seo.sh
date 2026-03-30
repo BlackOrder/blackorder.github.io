@@ -176,7 +176,9 @@ fi
 # Uses grep rather than htmlq --attribute because htmlq's --attribute flag extracts
 # a named attribute's value — 'charset' is an attribute name, not a 'content' value.
 # grep is the correct tool for this presence check.
-grep -q 'charset="utf-8"' "$HTML" \
+# Hugo --minify strips attribute value quotes: charset="utf-8" → charset=utf-8
+# Pattern matches both quoted and unquoted forms, case-insensitively.
+grep -iEq 'charset="?utf-8"?' "$HTML" \
   || (echo "FAIL: meta charset utf-8 missing" >&2; exit 1)
 echo "OK (o): meta charset utf-8 present"
 

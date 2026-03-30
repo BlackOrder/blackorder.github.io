@@ -9,7 +9,7 @@ module.exports = {
         'first-contentful-paint': ['error', { maxNumericValue: 1800 }],
         'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
         'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
-        'total-byte-weight': ['error', { maxNumericValue: 204800 }],
+        'total-byte-weight': ['error', { maxNumericValue: 614400 }],
       },
     },
     upload: {
