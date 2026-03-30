@@ -65,7 +65,7 @@
   --text-xl:   1.563rem;                       /* section titles (H2) */
   --text-2xl:  1.953rem;                       /* large display subheadings */
   --text-3xl:  2.441rem;                       /* page-level headings (H1) */
-  --text-hero: clamp(2.441rem, 4vw, 4rem);     /* hero display — fluid */
+  --text-hero: clamp(2.441rem, 4vw, 3.8rem);   /* hero display — fluid; max capped so headline fits 720px container */
 
   /* ---------- Layout tokens ---------- */
   --nav-height: 3.5rem;   /* fixed navbar height; also used by scroll-padding-top */
@@ -502,11 +502,36 @@ svg {
   display: flex;
   flex-direction: column;
   row-gap: var(--space-6);
+  align-items: center;
+  text-align: center;
+}
+
+/* Keep CTA full-width on mobile for tap target */
+.hero__content .btn--outlined {
+  align-self: stretch;
+}
+
+@media (min-width: 48rem) {
+  .hero__content {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero__content .btn--outlined {
+    align-self: auto;
+  }
 }
 
 /* H1 SVG logo mark in hero */
 .hero__logo {
   max-width: 280px;
+}
+
+/* Mobile: shrink headline so "Backend systems. Built to scale." fits on one line */
+@media (max-width: 47.99rem) {
+  .hero__headline {
+    font-size: clamp(1.25rem, 6vw, 2.441rem);
+  }
 }
 
 /* Primary headline: Cormorant Garamond 300 with negative tracking */
