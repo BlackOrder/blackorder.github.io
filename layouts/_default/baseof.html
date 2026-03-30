@@ -32,16 +32,18 @@
 <main id="main-content">
 {{ block "main" . }}{{ end }}
 </main>
-<footer>
-  <div class="footer-inner">
-    <a href="/#hero" aria-label="BlackOrder — home" class="footer-logo">
-      {{- readFile "assets/branding/logo-badge.svg" | safeHTML -}}
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <a href="/#hero" aria-label="BlackOrder — home" class="site-footer__logo">
+      <img src="/branding/logo-badge.webp" width="64" height="64" alt="">
     </a>
-    <a href="#contact" class="footer-contact-link">Work together</a>
-    <p class="footer-attribution">© BlackOrder</p>
-    {{ with site.Data.contact.github -}}
-    <a href="{{ . }}" class="footer-github-link" rel="noopener noreferrer" target="_blank" aria-label="BlackOrder on GitHub">GitHub</a>
-    {{- end }}
+    <div class="site-footer__nav">
+      <a href="#contact" class="site-footer__contact-link">Work together</a>
+      <p class="site-footer__attribution">© BlackOrder</p>
+      {{ with site.Data.contact.github -}}
+      <a href="{{ . }}" class="site-footer__contact-link" rel="noopener noreferrer" target="_blank" aria-label="BlackOrder on GitHub">GitHub</a>
+      {{- end }}
+    </div>
   </div>
 </footer>
 <script type="module">

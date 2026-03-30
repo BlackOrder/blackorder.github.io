@@ -1,52 +1,47 @@
+<input
+  type="checkbox"
+  id="nav-toggle"
+  class="nav-toggle"
+  aria-controls="nav-overlay"
+>
 <nav class="site-nav" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="/#hero" class="nav-logo" aria-label="BlackOrder — home">
-      {{- readFile "assets/branding/logo-badge.svg" | safeHTML -}}
-    </a>
-    <a href="/#hero" class="nav-logo nav-logo--mobile" aria-label="BlackOrder — home">
-      {{- readFile "assets/branding/logo-badge.svg" | safeHTML -}}
+  <div class="site-nav__inner">
+    <a href="/#hero" class="site-nav__logo" aria-label="BlackOrder — home">
+      <img src="/branding/logo-wordmark.webp" width="180" height="36" alt="BlackOrder" loading="eager">
     </a>
 
     {{- /* Desktop nav links */}}
-    <ul class="nav-links" role="list">
-      <li><a href="#specialties" class="nav-link">Specialties</a></li>
-      <li><a href="#work" class="nav-link">Work</a></li>
-      <li><a href="#about" class="nav-link">About</a></li>
-      <li><a href="#contact" class="nav-link">Contact</a></li>
+    <ul class="site-nav__links" role="list">
+      <li><a href="/#specialties" class="site-nav__link">Specialties</a></li>
+      <li><a href="/#work" class="site-nav__link">Work</a></li>
+      <li><a href="/#about" class="site-nav__link">About</a></li>
+      <li><a href="/#contact" class="site-nav__link">Contact</a></li>
     </ul>
 
     {{- /* Mobile hamburger toggle — CSS checkbox mechanism, no-JS functional */}}
-    <input
-      type="checkbox"
-      id="nav-toggle"
-      class="nav-toggle-input"
-      aria-controls="nav-overlay"
-    >
     <label
       id="nav-hamburger-label"
       for="nav-toggle"
-      class="nav-hamburger"
+      class="nav-toggle-label"
       aria-label="Open menu"
     >
-      <span class="nav-hamburger__bar"></span>
-      <span class="nav-hamburger__bar"></span>
-      <span class="nav-hamburger__bar"></span>
+      <span class="nav-toggle-label__icon"></span>
     </label>
   </div>
-
-  {{- /* Mobile full-screen overlay */}}
-  <div id="nav-overlay" class="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
-    <button class="nav-overlay__close" onclick="document.getElementById('nav-toggle').checked=false" aria-label="Close menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-    <ul class="nav-overlay__links" role="list">
-      <li><a href="#specialties" class="nav-overlay__link">Specialties</a></li>
-      <li><a href="#work" class="nav-overlay__link">Work</a></li>
-      <li><a href="#about" class="nav-overlay__link">About</a></li>
-      <li><a href="#contact" class="nav-overlay__link">Contact</a></li>
-    </ul>
-  </div>
 </nav>
+
+{{- /* Mobile full-screen overlay */}}
+<div id="nav-overlay" class="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="nav-overlay__close" onclick="document.getElementById('nav-toggle').checked=false" aria-label="Close menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <ul class="nav-overlay__links" role="list">
+    <li><a href="/#specialties" class="nav-overlay__link">Specialties</a></li>
+    <li><a href="/#work" class="nav-overlay__link">Work</a></li>
+    <li><a href="/#about" class="nav-overlay__link">About</a></li>
+    <li><a href="/#contact" class="nav-overlay__link">Contact</a></li>
+  </ul>
+</div>

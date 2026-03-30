@@ -294,24 +294,6 @@ svg {
   text-decoration: none;
 }
 
-/* H3 (desktop) / H4 (mobile) logo swap via CSS display */
-.site-nav__logo-h3 {
-  display: none;
-}
-
-.site-nav__logo-h4 {
-  display: block;
-}
-
-@media (min-width: 48rem) {
-  .site-nav__logo-h3 {
-    display: block;
-  }
-  .site-nav__logo-h4 {
-    display: none;
-  }
-}
-
 /* Desktop nav links — hidden on mobile */
 .site-nav__links {
   display: none;
@@ -977,6 +959,12 @@ svg {
 
 .site-footer__logo:hover {
   text-decoration: none;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 /* "Work together" contact link: --color-accent-secondary per §4.3 footer spec */

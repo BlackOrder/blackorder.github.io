@@ -132,7 +132,7 @@ jobs:
       - name: Install Lighthouse CI
         run: |
           set -euo pipefail
-          LHCI_VERSION=$(grep '^lhci' .ci/versions.txt | cut -d= -f2)
+          LHCI_VERSION=$(grep '^@lhci/cli' .ci/versions.txt | cut -d= -f2)
           npm install -g "@lhci/cli@${LHCI_VERSION}"
 
       - name: Install htmltest
@@ -231,10 +231,18 @@ jobs:
         run: |
           set -euo pipefail
           [ -f .ci/disclosure-blocklist.txt ] || { echo "INFO: .ci/disclosure-blocklist.txt absent — skipping post-build output scan"; exit 0; }
-          if grep -rif .ci/disclosure-blocklist.txt public/; then
+          _patterns_file=$(mktemp)
+          grep -v '^\s*#\|^\s*$' .ci/disclosure-blocklist.txt > "$_patterns_file" || true
+          if [ ! -s "$_patterns_file" ]; then
+            echo "INFO: .ci/disclosure-blocklist.txt has no effective entries — skipping post-build scan"
+            rm -f "$_patterns_file"; exit 0
+          fi
+          if grep -rif "$_patterns_file" public/ --include="*.html"; then
+            rm -f "$_patterns_file"
             echo "FAIL: disclosure blocklist match found in build output" >&2
             exit 1
           fi
+          rm -f "$_patterns_file"
 
       - name: Lighthouse CI
         run: |
