@@ -24,10 +24,11 @@ specialties:
     body: "Full system design and build. Greenfield platforms, legacy rebuilds, microservice decomposition. I own the design, the delivery, and the deployment. You get a system built to be maintained, extended, and owned after the engagement ends."
   - title: "Integrations"
     body: "Connecting systems that were not designed to talk to each other. APIs, protocols, message queues, third-party platforms. If two systems need to exchange data reliably, this is the work. The integration holds in production without ongoing intervention."
-  supporting_context: "Domain depth in telecom (RBT, SMS, SMPP), food-tech platforms, and DevOps orchestration. Go-first, with prior production work in Python, PHP, and TypeScript. I work project-based — I own the delivery, not a role within it."
-  forward_link:
-    label: "See my work ↓"
-    href: "#work"
+
+specialties_context: "Domain depth in telecom (RBT, SMS, SMPP), food-tech platforms, and DevOps orchestration. Go-first, with prior production work in Python, PHP, and TypeScript. I work project-based — I own the delivery, not a role within it."
+specialties_forward_link:
+  label: "See my work ↓"
+  href: "#work"
 
 work:
   section_header: "Selected Work"
