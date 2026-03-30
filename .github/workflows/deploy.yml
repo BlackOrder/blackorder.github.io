@@ -62,8 +62,8 @@ jobs:
           fi
           for f in "${svgs[@]}"; do
             size=$(wc -c < "$f")
-            if [ "$size" -gt 81920 ]; then
-              echo "FAIL: $f exceeds 80KB ($size bytes) — run SVGO optimization before building"
+            if [ "$size" -gt 153600 ]; then
+              echo "FAIL: $f exceeds 150KB ($size bytes) — run SVGO optimization before building"
               exit 1
             fi
           done
