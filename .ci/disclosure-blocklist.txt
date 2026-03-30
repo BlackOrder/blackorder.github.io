@@ -29,3 +29,7 @@
 #
 # Client and project proper nouns — prohibited from appearing in any rendered output
 FoodLogic
+telemedia
+sonus
+qmax
+q-max
