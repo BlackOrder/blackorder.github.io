@@ -1000,11 +1000,10 @@ svg {
   text-decoration: underline;
 }
 
-/* Copyright attribution: --color-text-muted is permissible here (decorative) */
 .site-footer__attribution {
   font-family: var(--font-body);
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
