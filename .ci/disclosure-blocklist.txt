@@ -27,7 +27,5 @@
 # added, the CI scan will warn that the blocklist has no effective entries
 # when private-work project entries exist.
 #
-# Example entries (uncomment and replace with actual terms):
-# acme-corp
-# project-phoenix
-# internal.example.com
+# Client and project proper nouns — prohibited from appearing in any rendered output
+FoodLogic

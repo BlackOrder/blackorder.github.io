@@ -33,5 +33,5 @@ demo  = ""
 
 # ── Internal context (never rendered) ────────────────────────────────────
 [internal]
-notes      = "FoodLogic platform. 10+ microservices: hub, project, outlet, callcenter, chain, order, audit, onpremise, shared, customer, partnership. Demonstrates scale and full-stack delivery. Primary carrier of the end-to-end ownership signal required by spec §5.4."
+notes      = "Client platform (name blocked — see .ci/disclosure-blocklist.txt). 10+ microservices: hub, project, outlet, callcenter, chain, order, audit, onpremise, shared, customer, partnership. Demonstrates scale and full-stack delivery. Primary carrier of the end-to-end ownership signal required by spec §5.4."
 tech_stack = ["Go", "PostgreSQL", "TypeScript", "Docker", "MongoDB"]
