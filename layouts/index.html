@@ -98,24 +98,25 @@
               {{- range first 5 .tags -}}<li class="badge">{{ . }}</li>{{- end -}}
             </ul>
             {{- end -}}
+            {{- $cardTitle := .title -}}
             {{- with .links -}}
             <footer class="work-card__links">
               {{- with .repo -}}
               <a href="{{ . }}" class="work-card__link" rel="noopener noreferrer" target="_blank"
-                 aria-label="{{ $.title }} on GitHub">
-                GitHub<span class="visually-hidden"> — {{ $.title }} (opens in new tab)</span>
+                 aria-label="{{ $cardTitle }} on GitHub">
+                GitHub<span class="visually-hidden"> — {{ $cardTitle }} (opens in new tab)</span>
               </a>
               {{- end -}}
               {{- with .pkg -}}
               <a href="{{ . }}" class="work-card__link" rel="noopener noreferrer" target="_blank"
-                 aria-label="{{ $.title }} package">
-                Package<span class="visually-hidden"> — {{ $.title }} (opens in new tab)</span>
+                 aria-label="{{ $cardTitle }} package">
+                Package<span class="visually-hidden"> — {{ $cardTitle }} (opens in new tab)</span>
               </a>
               {{- end -}}
               {{- with .demo -}}
               <a href="{{ . }}" class="work-card__link" rel="noopener noreferrer" target="_blank"
-                 aria-label="{{ $.title }} demo">
-                Demo<span class="visually-hidden"> — {{ $.title }} (opens in new tab)</span>
+                 aria-label="{{ $cardTitle }} demo">
+                Demo<span class="visually-hidden"> — {{ $cardTitle }} (opens in new tab)</span>
               </a>
               {{- end -}}
             </footer>
