@@ -4,7 +4,7 @@
 <section id="hero" class="section section--hero" aria-labelledby="hero-heading">
   <div class="hero__content">
     <div class="hero__logo">
-      <img src="/branding/logo-badge.webp" alt="BlackOrder" width="560" height="560" loading="eager">
+      <img src="/branding/logo-badge.webp" alt="BlackOrder" width="560" height="560" loading="eager" fetchpriority="high">
     </div>
     <h1 id="hero-heading" class="hero__headline">Systems that scale. Infrastructure that ships.</h1>
     <p class="hero__subheadline">Senior Go engineer for telecom platforms, complex integrations, and backend architecture.</p>
@@ -135,6 +135,9 @@
 <section id="about" class="section section--about" aria-labelledby="about-heading">
   <div class="section-inner section-inner--narrow">
     <h2 id="about-heading" class="section-heading">About</h2>
+    {{- with .Params.about.tagline }}
+    <p class="about__tagline">{{ . }}</p>
+    {{- end }}
     {{- range .Params.about.paragraphs }}
     <p>{{ . }}</p>
     {{- end }}

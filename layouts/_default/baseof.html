@@ -20,6 +20,7 @@
 <meta name="twitter:title" content="{{ .Title }} | BlackOrder">
 <meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="twitter:image" content="{{ "assets/branding/og-image.png" | absURL }}">
+<link rel="preload" as="image" type="image/webp" href="/branding/logo-badge.webp">
 <link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/fonts/cormorant-garamond-300.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/fonts/cormorant-garamond-400.woff2">
 {{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
