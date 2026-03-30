@@ -1,0 +1,4 @@
+# Contact data — single source of truth
+# Transition from GitHub-only to custom email/domain in v2 (see spec §5.7)
+github = "https://github.com/BlackOrder"
+# email = ""  # v2: custom domain email

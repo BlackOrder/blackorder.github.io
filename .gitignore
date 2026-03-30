@@ -3,6 +3,7 @@ CLAUDE.md
 .claude/
 docs/
 spec/
+.vscode/
 
 # OS files
 .DS_Store

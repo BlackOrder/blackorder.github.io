@@ -1,0 +1,19 @@
+baseURL = "https://blackorder.dev/"
+languageCode = "en-us"
+title = "BlackOrder"
+enableRobotsTXT = true
+canonifyURLs = false
+minify = true
+disableKinds = ["RSS", "taxonomy", "term"]
+
+[params]
+  description = "Go backend engineer specializing in platform architecture, telecom infrastructure, and system integrations."
+  # email and github sourced from data/contact.toml
+
+[markup.goldmark.renderer]
+  unsafe = false   # HTML in content files is stripped — intentional; templates handle all raw HTML
+
+[markup.highlight]
+  codeFences = true
+  noClasses = false   # use external CSS classes for syntax highlighting — no inline <style> blocks injected
+  style = ""          # empty: Chroma uses CSS classes only; add syntax highlight rules to main.css if needed

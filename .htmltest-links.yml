@@ -1,0 +1,12 @@
+DirectoryPath: public
+CheckLinks: true
+CheckImages: false
+CheckDoctype: false
+CheckFavicon: false
+CheckScripts: false
+CheckMeta: false
+CheckDuplicateIDs: false
+IgnoreURLs:
+  - "^https?://"
+IgnoreDirectories:
+  - "public/blog"

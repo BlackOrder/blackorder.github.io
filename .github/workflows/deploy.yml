@@ -1,0 +1,251 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # retained for forward-compatibility with Hugo theme submodules; safe when no submodule exists
+          fetch-depth: 0
+
+      - name: Registry validation
+        run: |
+          set -euo pipefail
+          bash scripts/validate-projects.sh
+
+      - name: Contact data validation
+        run: |
+          set -euo pipefail
+          bash scripts/check-contact.sh
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.123.0'
+          extended: true
+
+      - name: Verify Hugo Extended
+        run: |
+          set -euo pipefail
+          hugo version | grep -i 'extended' || (echo "FAIL: Hugo Extended binary required" && exit 1)
+
+      - name: SVG size check
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          svgs=(assets/branding/*.svg)
+          if [ ${#svgs[@]} -eq 0 ]; then
+            echo "WARN: no SVG files found in assets/branding/ — skipping size check"
+            exit 0
+          fi
+          for f in "${svgs[@]}"; do
+            size=$(wc -c < "$f")
+            if [ "$size" -gt 81920 ]; then
+              echo "FAIL: $f exceeds 80KB ($size bytes) — run SVGO optimization before building"
+              exit 1
+            fi
+          done
+
+      - name: TOML content scan
+        run: |
+          set -euo pipefail
+          # Guard: check for absent blocklist — hard-fail if private-work entries exist
+          if [ ! -f .ci/disclosure-blocklist.txt ]; then
+            if grep -ql 'group *= *"private-work"' data/projects/*.toml 2>/dev/null; then
+              echo "FAIL: .ci/disclosure-blocklist.txt is missing and private-work project entries exist — blocklist required" >&2
+              exit 1
+            fi
+            echo "WARN: .ci/disclosure-blocklist.txt absent — no private-work entries detected, proceeding" >&2
+          fi
+
+          if [ -f .ci/disclosure-blocklist.txt ]; then
+            EFFECTIVE_ENTRIES=$(grep -v '^\s*#' .ci/disclosure-blocklist.txt | grep -v '^\s*$' | wc -l)
+            if [ "$EFFECTIVE_ENTRIES" -eq 0 ]; then
+              if grep -ql 'group *= *"private-work"' data/projects/*.toml 2>/dev/null; then
+                echo "FAIL: .ci/disclosure-blocklist.txt exists but has no effective entries (all comments/empty) and private-work entries exist" >&2
+                exit 1
+              fi
+              echo "WARN: .ci/disclosure-blocklist.txt exists but has no effective entries" >&2
+            fi
+          fi
+
+          [ -f .ci/disclosure-blocklist.txt ] || { echo "INFO: .ci/disclosure-blocklist.txt absent — skipping TOML scan"; exit 0; }
+
+          non_comment_lines=$(grep -cv '^\s*#\|^\s*$' .ci/disclosure-blocklist.txt || true)
+          if [ "$non_comment_lines" -eq 0 ]; then
+            echo "WARN: .ci/disclosure-blocklist.txt has no non-comment entries — TOML scan will match nothing; add blocklist terms" >&2
+          fi
+
+          shopt -s nullglob
+          toml_files=(data/projects/*.toml)
+          if [ ${#toml_files[@]} -eq 0 ]; then
+            echo "INFO: no TOML files found in data/projects/ — skipping TOML scan"
+            exit 0
+          fi
+
+          toml_matches=$(grep -i -f .ci/disclosure-blocklist.txt "${toml_files[@]}" \
+            | grep -E '^\s*(notes|tech_stack)\s*=' || true)
+          if [ -n "$toml_matches" ]; then
+            echo "FAIL: disclosure blocklist match found in data/projects/*.toml internal fields" >&2
+            echo "$toml_matches" >&2
+            exit 1
+          fi
+
+      - name: Hugo build
+        run: |
+          set -euo pipefail
+          hugo --minify --gc 2>&1 | tee /tmp/hugo-build.log
+          warn_count=$(grep -c 'WARN\|WARNING\|DEPRECATED' /tmp/hugo-build.log || true)
+          if [ "$warn_count" -gt 0 ]; then
+            echo "FAIL: Hugo produced ${warn_count} warning line(s) — zero warnings permitted"
+            grep 'WARN\|WARNING\|DEPRECATED' /tmp/hugo-build.log
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Lighthouse CI
+        run: |
+          set -euo pipefail
+          LHCI_VERSION=$(grep '^lhci' .ci/versions.txt | cut -d= -f2)
+          npm install -g "@lhci/cli@${LHCI_VERSION}"
+
+      - name: Install htmltest
+        run: |
+          set -euo pipefail
+          HTMLTEST_VERSION=$(grep '^htmltest' .ci/versions.txt | cut -d= -f2)
+          curl -sSL "https://github.com/wjdp/htmltest/releases/download/v${HTMLTEST_VERSION}/htmltest_${HTMLTEST_VERSION}_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin
+
+      - name: Install htmlq
+        run: |
+          set -euo pipefail
+          HTMLQ_VERSION=$(grep '^htmlq' .ci/versions.txt | cut -d= -f2)
+          curl -sSL "https://github.com/mgdm/htmlq/releases/download/v${HTMLQ_VERSION}/htmlq-x86_64-linux.tar.gz" | tar -xz -C /usr/local/bin
+
+      - name: HTML lang attribute check
+        run: |
+          set -euo pipefail
+          grep -q '<html[^>]* lang=' public/index.html || (echo "FAIL: <html lang> attribute missing in index.html" >&2 && exit 1)
+          grep -q '<html[^>]* lang=' public/404.html || (echo "FAIL: <html lang> attribute missing in 404.html" >&2 && exit 1)
+
+      - name: H1 count check
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          html_files=(public/*.html)
+          if [ ${#html_files[@]} -eq 0 ]; then
+            echo "WARN: no HTML files found in public/ — skipping H1 count check"
+            exit 0
+          fi
+          for f in "${html_files[@]}"; do
+            count=$(grep -o '<h1' "$f" 2>/dev/null | wc -l || echo 0)
+            if [ "$count" -gt 1 ]; then
+              echo "FAIL: $f has $count <h1> elements (max 1)" >&2
+              exit 1
+            fi
+          done
+
+      - name: Double-slash URL check
+        run: |
+          set -euo pipefail
+          if grep -rq 'href="//' public/ || grep -rq "href='//" public/; then
+            echo "FAIL: double-slash href URLs found in public/ — check canonifyURLs and baseURL settings"
+            exit 1
+          fi
+
+      - name: Font file presence check
+        run: |
+          set -euo pipefail
+          test -f public/fonts/cormorant-garamond-300.woff2 \
+            && test -f public/fonts/cormorant-garamond-400.woff2 \
+            || (echo "FAIL: one or both font WOFF2 files missing from public/fonts/ — check static/fonts/ source and hugo build output" && exit 1)
+
+      - name: Font display swap check
+        run: |
+          set -euo pipefail
+          find public -name '*.css' | xargs grep -l 'font-display.*swap' > /dev/null 2>&1 || \
+            (echo "FAIL: font-display: swap not found in built CSS — required for LCP target" >&2 && exit 1)
+
+      - name: HTML validity check
+        run: |
+          set -euo pipefail
+          htmltest --conf .htmltest.yml public/
+
+      - name: Internal link check
+        run: |
+          set -euo pipefail
+          htmltest --conf .htmltest-links.yml public/
+
+      - name: SEO meta tag validation
+        run: |
+          set -euo pipefail
+          bash scripts/check-seo.sh public/index.html
+
+      - name: Google verification file check
+        run: |
+          set -euo pipefail
+          if [ ! -f .checksums/google-verify.sha256 ]; then
+            echo "FAIL: .checksums/google-verify.sha256 not found."
+            echo "  This file must be created before the first CI run."
+            echo "  One-time setup (from repo root):"
+            echo "    mkdir -p .checksums"
+            echo "    sha256sum static/google78a83929b1057f91.html | awk '{print \$1}' > .checksums/google-verify.sha256"
+            echo "    git add .checksums/google-verify.sha256"
+            echo "    git commit -m 'chore: add google verification file checksum'"
+            echo "  See spec/00-OVERVIEW.md §10 and spec/09-quality.md §9.5."
+            exit 1
+          fi
+          test -f public/google78a83929b1057f91.html \
+            || (echo "FAIL: google verification file missing from public/" >&2 && exit 1)
+          sha256sum public/google78a83929b1057f91.html \
+            | awk '{print $1}' \
+            | diff - .checksums/google-verify.sha256 \
+            || (echo "FAIL: google verification file checksum mismatch" >&2 && exit 1)
+
+      - name: Disclosure scan
+        run: |
+          set -euo pipefail
+          [ -f .ci/disclosure-blocklist.txt ] || { echo "INFO: .ci/disclosure-blocklist.txt absent — skipping post-build output scan"; exit 0; }
+          if grep -rif .ci/disclosure-blocklist.txt public/; then
+            echo "FAIL: disclosure blocklist match found in build output" >&2
+            exit 1
+          fi
+
+      - name: Lighthouse CI
+        run: |
+          set -euo pipefail
+          lhci autorun
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

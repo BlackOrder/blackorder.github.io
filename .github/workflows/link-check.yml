@@ -1,0 +1,59 @@
+name: Monthly Link Check
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'  # first day of each month, 09:00 UTC
+  workflow_dispatch:  # allow manual trigger
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.123.0'
+          extended: true
+
+      - name: Hugo build
+        run: |
+          set -euo pipefail
+          hugo --minify --gc
+
+      - name: Install htmltest
+        run: |
+          set -euo pipefail
+          HTMLTEST_VERSION=$(grep '^htmltest' .ci/versions.txt | cut -d= -f2)
+          curl -sSL "https://github.com/wjdp/htmltest/releases/download/v${HTMLTEST_VERSION}/htmltest_${HTMLTEST_VERSION}_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin
+
+      - name: External link check (non-blocking)
+        id: link-check
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          htmltest --conf .htmltest-links.yml public/
+
+      - name: Create issue on failure
+        if: steps.link-check.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Monthly link check failed — ${date}`,
+              body: `The monthly external link check detected broken or unreachable links.\n\nRun date: ${date}\n\nCheck the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\n**SLA:** Broken links must be resolved within 14 days of detection (spec §9.3).`,
+              labels: ['link-check', 'maintenance'],
+            });

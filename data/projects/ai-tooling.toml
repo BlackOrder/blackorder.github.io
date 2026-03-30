@@ -1,0 +1,37 @@
+# ── Identity ──────────────────────────────────────────────────────────────
+id            = "ai-tooling"
+title         = "AI Tooling"
+public        = true
+
+# ── Rendering group ───────────────────────────────────────────────────────
+group         = "private-work"
+
+# ── Ordering ──────────────────────────────────────────────────────────────
+display_order = 3
+
+# ── Status ────────────────────────────────────────────────────────────────
+status        = "active"
+
+# ── Builder judgment flag ─────────────────────────────────────────────────
+featured      = false
+
+# ── Public-facing content ─────────────────────────────────────────────────
+public_description = "Developer tooling for AI-assisted workflows. MCP server exposing 38 tools. VS Code extension embedding the MCP server in-process. Claude Code plugin layer. Consolidates 38 MCP tools and two extension layers into a single in-process interface — eliminates tool-switching across four previously separate developer surfaces."
+
+audience_framing = ""
+
+outcome = "Consolidates 38 MCP tools and two extension layers into a single in-process interface — eliminates tool-switching across four previously separate developer surfaces."
+
+# ── Public badge tags ─────────────────────────────────────────────────────
+tags = ["TypeScript", "MCP", "VS Code", "AI Tooling"]
+
+# ── Links ─────────────────────────────────────────────────────────────────
+[links]
+repo  = ""
+pkg   = ""
+demo  = ""
+
+# ── Internal context (never rendered) ────────────────────────────────────
+[internal]
+notes      = "freelance-hub-mcp (38 tools) + freelance-hub-vscode (VS Code extension) + Claude Code plugin. Position: card 3 of 3 in private-work group. Standard card — no featured treatment, no accent color, no pinned position. AI tooling is a differentiator within engagements, not a primary service offering."
+tech_stack = ["TypeScript", "Shell", "MCP Protocol", "VS Code Extension API"]
