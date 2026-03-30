@@ -1,0 +1,37 @@
+# ── Identity ──────────────────────────────────────────────────────────────
+id            = "jasmin-sms-extensions"
+title         = "Jasmin SMS extensions"
+public        = true
+
+# ── Rendering group ───────────────────────────────────────────────────────
+group         = "public-projects"
+
+# ── Ordering ──────────────────────────────────────────────────────────────
+display_order = 2
+
+# ── Status ────────────────────────────────────────────────────────────────
+status        = "active"
+
+# ── Builder judgment flag ─────────────────────────────────────────────────
+featured      = false
+
+# ── Public-facing content ─────────────────────────────────────────────────
+public_description = "Four PyPI packages extending Jasmin SMS Gateway with MongoDB integration: realtime stats, telnet management, MongoDB logging, and MongoDB configuration sync via Change Streams. Production tooling in active use."
+
+audience_framing = "teams operating Jasmin SMS gateways at scale"
+
+outcome = "Production tooling in active use."
+
+# ── Public badge tags ─────────────────────────────────────────────────────
+tags = ["Python", "Telecom", "SMS", "Open Source", "MongoDB"]
+
+# ── Links ─────────────────────────────────────────────────────────────────
+[links]
+repo  = ""
+pkg   = "https://pypi.org/user/BlackOrder/"
+demo  = ""
+
+# ── Internal context (never rendered) ────────────────────────────────────
+[internal]
+notes      = "4 PyPI packages: jasmin_realtime, jasmin_telnet, jasmin_mongo_logger, jasmin_mongo_configuration. Telecom domain signal for the primary client type. Bridges to private telecom work. Production use by teams running SMS gateways."
+tech_stack = ["Python", "MongoDB", "Docker", "AMQP", "Jasmin SMS Gateway"]

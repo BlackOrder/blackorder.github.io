@@ -1,0 +1,37 @@
+# ── Identity ──────────────────────────────────────────────────────────────
+id            = "vcdeploy"
+title         = "vcdeploy"
+public        = true
+
+# ── Rendering group ───────────────────────────────────────────────────────
+group         = "public-projects"
+
+# ── Ordering ──────────────────────────────────────────────────────────────
+display_order = 1
+
+# ── Status ────────────────────────────────────────────────────────────────
+status        = "active"
+
+# ── Builder judgment flag ─────────────────────────────────────────────────
+featured      = false
+
+# ── Public-facing content ─────────────────────────────────────────────────
+public_description = "Manages web application lifecycle across servers without downtime. Webhook-driven deploys from GitHub, GitLab, and Bitbucket. Zero-downtime symlink releases. Web UI with RBAC and 2FA. AES-256-GCM secret encryption with auto key rotation. Built in Go with gRPC master-agent architecture."
+
+audience_framing = "teams deploying Go applications to production"
+
+outcome = "Manages web application lifecycle across servers without downtime."
+
+# ── Public badge tags ─────────────────────────────────────────────────────
+tags = ["Go", "gRPC", "DevOps", "Open Source", "Security"]
+
+# ── Links ─────────────────────────────────────────────────────────────────
+[links]
+repo  = "https://github.com/BlackOrder/vcdeploy"
+pkg   = ""
+demo  = ""
+
+# ── Internal context (never rendered) ────────────────────────────────────
+[internal]
+notes      = "Flagship OSS project. Created January 2026. Highest acquisition signal: public, verifiable, recent, demonstrates architecture + security + DevOps + Go simultaneously. Primary differentiator for DevOps platform clients."
+tech_stack = ["Go", "gRPC", "SQLite", "TypeScript", "Docker", "HTML"]

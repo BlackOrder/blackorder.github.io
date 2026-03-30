@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en-us" }}">
+<head>
+<style>html,body{background:#0d0d0d;color-scheme:only dark}</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ .Title }} | {{ .Site.Title }}</title>
+<meta name="color-scheme" content="dark">
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="{{ .Title }} | BlackOrder">
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:image" content="{{ "assets/branding/og-image.png" | absURL }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }} | BlackOrder">
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="twitter:image" content="{{ "assets/branding/og-image.png" | absURL }}">
+<link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/fonts/cormorant-garamond-300.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/fonts/cormorant-garamond-400.woff2">
+{{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ partial "structured-data.html" . }}
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+{{ partial "nav.html" . }}
+<main id="main-content">
+{{ block "main" . }}{{ end }}
+</main>
+<footer>
+  <div class="footer-inner">
+    <a href="/#hero" aria-label="BlackOrder — home" class="footer-logo">
+      {{- readFile "assets/branding/logo-h4.svg" | safeHTML -}}
+    </a>
+    <a href="#contact" class="footer-contact-link">Work together</a>
+    <p class="footer-attribution">© BlackOrder</p>
+    {{ with site.Data.contact.github -}}
+    <a href="{{ . }}" class="footer-github-link" rel="noopener noreferrer" target="_blank" aria-label="BlackOrder on GitHub">GitHub</a>
+    {{- end }}
+  </div>
+</footer>
+<script type="module">
+// Deferred enhancement: Escape closes overlay; anchor links close overlay
+const toggle = document.getElementById('nav-toggle');
+const overlay = document.getElementById('nav-overlay');
+if (toggle && overlay) {
+  // Sync aria-expanded with checkbox state
+  const syncAria = () => {
+    toggle.setAttribute('aria-expanded', toggle.checked ? 'true' : 'false');
+  };
+  toggle.addEventListener('change', syncAria);
+  syncAria();
+
+  // Close overlay on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle.checked) {
+      toggle.checked = false;
+      syncAria();
+      document.getElementById('nav-hamburger-label')?.focus();
+    }
+  });
+
+  // Close overlay when a nav anchor link is clicked
+  overlay.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      toggle.checked = false;
+      syncAria();
+    });
+  });
+}
+</script>
+</body>
+</html>

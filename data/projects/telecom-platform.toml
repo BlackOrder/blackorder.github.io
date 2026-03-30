@@ -1,0 +1,37 @@
+# ── Identity ──────────────────────────────────────────────────────────────
+id            = "telecom-platform"
+title         = "Telecom Platform"
+public        = true
+
+# ── Rendering group ───────────────────────────────────────────────────────
+group         = "private-work"
+
+# ── Ordering ──────────────────────────────────────────────────────────────
+display_order = 1
+
+# ── Status ────────────────────────────────────────────────────────────────
+status        = "completed"
+
+# ── Builder judgment flag ─────────────────────────────────────────────────
+featured      = false
+
+# ── Public-facing content ─────────────────────────────────────────────────
+public_description = "Complete cloud and on-premise RBT platform for a telecom operator. Built in Go. Core response path operates at sub-nanosecond latency in production — delivering operator-scale real-time subscriber responses."
+
+audience_framing = ""
+
+outcome = "Core response path operates at sub-nanosecond latency in production — delivering operator-scale real-time subscriber responses."
+
+# ── Public badge tags ─────────────────────────────────────────────────────
+tags = ["Go", "Telecom", "RBT", "Architecture"]
+
+# ── Links ─────────────────────────────────────────────────────────────────
+[links]
+repo  = ""
+pkg   = ""
+demo  = ""
+
+# ── Internal context (never rendered) ────────────────────────────────────
+[internal]
+notes      = "Complete RBT system for a telecom operator. Both cloud and on-premise deployments. Hardest specialty to fake — highest acquisition signal for the primary client type. Sub-nanosecond latency claim is verified via benchmarks in production-equivalent environment; update annotation if claim changes."
+tech_stack = ["Go", "PHP", "TypeScript", "Next.js", "MongoDB", "Docker"]

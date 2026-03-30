@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<style>html,body{background:#0d0d0d;color-scheme:only dark}</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | {{ .Site.Title }}</title>
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+{{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+{{ partial "nav.html" . }}
+<main id="main-content" class="page-404">
+  <div class="page-404__inner">
+    <div class="page-404__logo" aria-hidden="true">
+      {{- readFile "assets/branding/logo-h1.svg" | safeHTML -}}
+    </div>
+    <h1 class="page-404__heading">Page not found</h1>
+    <p class="page-404__body">The page you're looking for doesn't exist or has moved.</p>
+    <a href="/" class="btn btn--outlined">Go to homepage</a>
+  </div>
+</main>
+<script type="module">
+// Deferred enhancement: Escape closes overlay; anchor links close overlay
+const toggle = document.getElementById('nav-toggle');
+const overlay = document.getElementById('nav-overlay');
+if (toggle && overlay) {
+  const syncAria = () => {
+    toggle.setAttribute('aria-expanded', toggle.checked ? 'true' : 'false');
+  };
+  toggle.addEventListener('change', syncAria);
+  syncAria();
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle.checked) {
+      toggle.checked = false;
+      syncAria();
+      document.getElementById('nav-hamburger-label')?.focus();
+    }
+  });
+  overlay.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      toggle.checked = false;
+      syncAria();
+    });
+  });
+}
+</script>
+</body>
+</html>

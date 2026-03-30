@@ -1,0 +1,155 @@
+{{ define "main" }}
+
+{{- /* ── Hero Section ─────────────────────────────────────────────────────── */}}
+<section id="hero" class="section section--hero" aria-labelledby="hero-heading">
+  <div class="hero-content">
+    <div class="hero-logo" role="img" aria-labelledby="logo-title-hero">
+      {{- readFile "assets/branding/logo-h1.svg" | safeHTML -}}
+    </div>
+    <h1 id="hero-heading" class="hero-headline">Systems that scale. Infrastructure that ships.</h1>
+    <p class="hero-subheadline">Senior Go engineer for telecom platforms, complex integrations, and backend architecture.</p>
+    <p class="hero-positioning">I own the design, the delivery, and the deployment.</p>
+    <ul class="specialty-tags" aria-label="Specialties">
+      <li class="badge">Go</li>
+      <li class="badge">Telecom</li>
+      <li class="badge">Infrastructure</li>
+    </ul>
+    <a href="#contact" class="btn btn--outlined">Get in touch</a>
+    <a href="#work" class="hero-secondary-link">See my work ↓</a>
+  </div>
+</section>
+
+{{- /* ── Specialties Section ─────────────────────────────────────────────── */}}
+<section id="specialties" class="section section--specialties" aria-labelledby="specialties-heading">
+  <div class="section-inner">
+    <h2 id="specialties-heading" class="section-heading">Specialties</h2>
+    <div class="specialties-grid">
+      <div class="specialty-block">
+        <h3 class="specialty-block__heading">Systems Architecture</h3>
+        <p class="specialty-block__body">Builds and rebuilds complete systems from the ground up. From protocol-level telecom integration to full microservices platforms — I design the architecture, define the contracts, and own every layer from infra to API surface.</p>
+      </div>
+      <div class="specialty-block">
+        <h3 class="specialty-block__heading">Platform Integrations</h3>
+        <p class="specialty-block__body">Links systems together at every level — SMPP gateways, RBT platforms, third-party APIs, and legacy infrastructure. Deep protocol knowledge across telecom, food-tech, and DevOps stacks means fewer surprises and faster delivery.</p>
+      </div>
+    </div>
+    <a href="#work" class="specialties-forward-link">See my work ↓</a>
+  </div>
+</section>
+
+{{- /* ── Work Section ─────────────────────────────────────────────────────── */}}
+<section id="work" class="section section--work" aria-labelledby="work-heading">
+  <div class="section-inner">
+    <h2 id="work-heading" class="section-heading">Work</h2>
+
+    {{- /* Collect all public project entries */}}
+    {{- $allProjects := slice -}}
+    {{- range $slug, $p := .Site.Data.projects -}}
+      {{- if $p.public -}}
+        {{- $allProjects = $allProjects | append $p -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- /* Sort: by display_order ascending */}}
+    {{- $sorted := sort $allProjects "display_order" "asc" -}}
+
+    {{- /* Render groups in fixed order */}}
+    {{- $groups := slice "public-projects" "private-work" -}}
+    {{- $groupLabels := dict "public-projects" "Public Projects" "private-work" "Private Work" -}}
+
+    {{- range $groupKey := $groups -}}
+      {{- $featured := slice -}}
+      {{- $standard := slice -}}
+      {{- range $sorted -}}
+        {{- if eq .group $groupKey -}}
+          {{- if .featured -}}
+            {{- $featured = $featured | append . -}}
+          {{- else -}}
+            {{- $standard = $standard | append . -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $groupEntries := $featured | append $standard -}}
+
+      {{- if $groupEntries -}}
+      <div class="work-group" data-group="{{ $groupKey }}">
+        <h3 class="work-group-header">{{ index $groupLabels $groupKey }}</h3>
+        <div class="work-cards">
+          {{- range $groupEntries -}}
+          <article class="work-card{{ if .featured }} work-card--featured{{ end }}"
+                   data-type="{{ .group }}" data-status="{{ .status }}"
+                   {{- if .featured }} aria-label="Featured project: {{ .title }}"{{ end }}>
+            <header class="work-card__header">
+              <span class="work-card__title">{{ .title }}</span>
+              {{- if eq .group "private-work" -}}
+              <span class="work-card__meta">Private Engagement</span>
+              {{- end -}}
+            </header>
+            <div class="work-card__body">
+              {{- if .audience_framing -}}
+              <p class="work-card__copy"><strong>{{ .audience_framing }}</strong> {{ .public_description }}</p>
+              {{- else -}}
+              <p class="work-card__copy">{{ .public_description }}</p>
+              {{- end -}}
+              {{- with .outcome -}}<p class="work-card__outcome">{{ . }}</p>{{- end -}}
+            </div>
+            {{- if .tags -}}
+            <ul class="work-card__tags" aria-label="Technologies">
+              {{- range first 5 .tags -}}<li class="badge">{{ . }}</li>{{- end -}}
+            </ul>
+            {{- end -}}
+            {{- with .links -}}
+            <footer class="work-card__links">
+              {{- with .repo -}}
+              <a href="{{ . }}" class="work-card__link" rel="noopener noreferrer" target="_blank"
+                 aria-label="{{ $.title }} on GitHub">
+                GitHub<span class="visually-hidden"> — {{ $.title }} (opens in new tab)</span>
+              </a>
+              {{- end -}}
+              {{- with .pkg -}}
+              <a href="{{ . }}" class="work-card__link" rel="noopener noreferrer" target="_blank"
+                 aria-label="{{ $.title }} package">
+                Package<span class="visually-hidden"> — {{ $.title }} (opens in new tab)</span>
+              </a>
+              {{- end -}}
+              {{- with .demo -}}
+              <a href="{{ . }}" class="work-card__link" rel="noopener noreferrer" target="_blank"
+                 aria-label="{{ $.title }} demo">
+                Demo<span class="visually-hidden"> — {{ $.title }} (opens in new tab)</span>
+              </a>
+              {{- end -}}
+            </footer>
+            {{- end -}}
+          </article>
+          {{- end -}}
+        </div>
+      </div>
+      {{- end -}}
+    {{- end -}}
+
+  </div>
+</section>
+
+{{- /* ── About Section ──────────────────────────────────────────────────── */}}
+<section id="about" class="section section--about" aria-labelledby="about-heading">
+  <div class="section-inner section-inner--narrow">
+    <h2 id="about-heading" class="section-heading">About</h2>
+    {{ .Content }}
+  </div>
+</section>
+
+{{- /* ── Contact Section ─────────────────────────────────────────────────── */}}
+<section id="contact" class="section section--contact" aria-labelledby="contact-heading">
+  <div class="section-inner section-inner--centered">
+    <h2 id="contact-heading" class="section-heading">Work Together</h2>
+    <p class="contact-lead">Available for project-based engagements. If you're building something that requires deep backend and infrastructure expertise — reach out on GitHub.</p>
+    {{ with site.Data.contact.github }}
+    <a href="{{ . }}" class="btn btn--outlined" rel="noopener noreferrer" target="_blank"
+       aria-label="Contact BlackOrder on GitHub (opens in new tab)">
+      Get in touch on GitHub
+    </a>
+    {{ end }}
+  </div>
+</section>
+
+{{ end }}

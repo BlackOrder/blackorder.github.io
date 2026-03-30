@@ -1,0 +1,37 @@
+# ── Identity ──────────────────────────────────────────────────────────────
+id            = "go-libraries"
+title         = "Go libraries"
+public        = true
+
+# ── Rendering group ───────────────────────────────────────────────────────
+group         = "public-projects"
+
+# ── Ordering ──────────────────────────────────────────────────────────────
+display_order = 3
+
+# ── Status ────────────────────────────────────────────────────────────────
+status        = "active"
+
+# ── Builder judgment flag ─────────────────────────────────────────────────
+featured      = false
+
+# ── Public-facing content ─────────────────────────────────────────────────
+public_description = "Seven published Go modules covering production infrastructure primitives: batchwriter, chanhub, configwatcher, reloader, systemd, throttler, complete-command. CI, tests, and documentation on each package."
+
+audience_framing = "Go engineers building production services that need reliable infrastructure primitives"
+
+outcome = ""
+
+# ── Public badge tags ─────────────────────────────────────────────────────
+tags = ["Go", "Open Source"]
+
+# ── Links ─────────────────────────────────────────────────────────────────
+[links]
+repo  = "https://github.com/BlackOrder"
+pkg   = ""
+demo  = ""
+
+# ── Internal context (never rendered) ────────────────────────────────────
+[internal]
+notes      = "Aggregate card for 7 Go modules. All created mid-2025. Demonstrates systematic library design and open-source commitment. Signals capability breadth (concurrency, generics, systemd integration) without a single flagship project. Developer-audience credibility signal."
+tech_stack = ["Go", "GitHub Actions"]

@@ -1,0 +1,37 @@
+# ── Identity ──────────────────────────────────────────────────────────────
+id            = "food-tech-platform"
+title         = "Food-Tech Platform"
+public        = true
+
+# ── Rendering group ───────────────────────────────────────────────────────
+group         = "private-work"
+
+# ── Ordering ──────────────────────────────────────────────────────────────
+display_order = 2
+
+# ── Status ────────────────────────────────────────────────────────────────
+status        = "completed"
+
+# ── Builder judgment flag ─────────────────────────────────────────────────
+featured      = false
+
+# ── Public-facing content ─────────────────────────────────────────────────
+public_description = "Full restaurant and food delivery platform. 10+ Go microservices, built from scratch. Complete stack: order management, delivery routing, merchant tooling. Replaced a fragmented legacy operation with a single integrated system owned end-to-end."
+
+audience_framing = ""
+
+outcome = "Replaced a fragmented legacy operation with a single integrated system owned end-to-end."
+
+# ── Public badge tags ─────────────────────────────────────────────────────
+tags = ["Go", "Microservices", "Architecture", "Food-Tech"]
+
+# ── Links ─────────────────────────────────────────────────────────────────
+[links]
+repo  = ""
+pkg   = ""
+demo  = ""
+
+# ── Internal context (never rendered) ────────────────────────────────────
+[internal]
+notes      = "FoodLogic platform. 10+ microservices: hub, project, outlet, callcenter, chain, order, audit, onpremise, shared, customer, partnership. Demonstrates scale and full-stack delivery. Primary carrier of the end-to-end ownership signal required by spec §5.4."
+tech_stack = ["Go", "PostgreSQL", "TypeScript", "Docker", "MongoDB"]

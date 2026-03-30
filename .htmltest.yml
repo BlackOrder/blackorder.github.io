@@ -1,0 +1,10 @@
+DirectoryPath: public
+CheckDoctype: true
+CheckFavicon: false
+CheckImages: true
+CheckLinks: false
+CheckScripts: false
+CheckMeta: false
+CheckDuplicateIDs: true
+IgnoreURLs:
+  - "^https://blackorder.github.io"

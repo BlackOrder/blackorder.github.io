@@ -1,0 +1,33 @@
+# .ci/disclosure-blocklist.txt
+# Versioned private work disclosure blocklist for the BlackOrder personal brand site.
+# Spec reference: spec/09-quality.md §9.6
+# Renamed from .ci/project-blocklist.txt per finding F-2026-03-29-120.
+#
+# Format: one prohibited term per line (case-insensitive grep match).
+# Lines beginning with # are comments and are ignored by the CI scan.
+# Empty lines are ignored.
+#
+# This file is scanned against:
+#   1. data/projects/*.toml (internal.notes and internal.tech_stack lines only — pre-build)
+#   2. public/ rendered HTML output (post-build)
+#
+# Authoritative source for prohibited categories: spec/05-content.md §5.5
+#   - Client/employer proper nouns (company names, brand names)
+#   - Internal project codenames
+#   - Email addresses other than the owner's own
+#   - Internal URLs or IP addresses
+#   - Unreleased tooling names
+#
+# MAINTENANCE: Update this file whenever new private work content is added
+# to data/projects/ or content/_index.md. The blocklist review MUST occur
+# in the same commit or PR as the new private work content.
+#
+# INITIAL STATE: No prohibited terms are defined yet. Add entries below as
+# private work entries are populated in data/projects/. Until entries are
+# added, the CI scan will warn that the blocklist has no effective entries
+# when private-work project entries exist.
+#
+# Example entries (uncomment and replace with actual terms):
+# acme-corp
+# project-phoenix
+# internal.example.com
