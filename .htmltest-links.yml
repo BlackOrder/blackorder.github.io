@@ -1,12 +1,11 @@
-DirectoryPath: public
-CheckLinks: true
+# htmltest — external link integrity over the built output (dist/).
+# Used by the monthly, non-blocking link-check workflow (.github/workflows/link-check.yml).
+# Structural/internal validity over dist/ is covered separately by .htmltest.yml in deploy.yml.
+DirectoryPath: "dist"
+CheckExternal: true
+CheckInternal: false
 CheckImages: false
-CheckDoctype: false
-CheckFavicon: false
+CheckLinks: true
 CheckScripts: false
-CheckMeta: false
-CheckDuplicateIDs: false
-IgnoreURLs:
-  - "^https?://"
-IgnoreDirectories:
-  - "public/blog"
+IgnoreAltMissing: true
+TestFilesConcurrently: false

@@ -1,4 +1,4 @@
+# Non-npm CI tooling versions (read by .github/workflows/*.yml).
+# npm-managed tools (@lhci/cli, eslint, typescript, tsx, vite, …) are pinned by package-lock.json.
 htmltest=0.17.0
-htmlq=0.4.0
-@lhci/cli=0.14.0
 node=22

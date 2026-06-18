@@ -1,51 +1,47 @@
-# .ci/ — CI Tool Dependency Notes
+# .ci/ — CI configuration & tooling notes
 
-This directory contains pinned tool versions and supporting CI configuration for the BlackOrder personal brand site build pipeline.
+Supporting configuration for the BlackOrder site build pipeline
+(`.github/workflows/deploy.yml` and `link-check.yml`). The site is a Vite + React + TypeScript
+SPA, statically pre-rendered with `vite-react-ssg` and deployed to GitHub Pages.
 
 ## Files
 
 ### `versions.txt`
 
-Pinned versions for all external CI tools. Read by the `.github/workflows/deploy.yml` build job to install tools at a specific version for reproducibility.
+Pinned versions for **non-npm** CI tooling, read by the workflows at install time. Format:
+`tool=VERSION`, one per line.
 
-Format: `tool=VERSION` (one entry per line).
+| Key | Tool | Purpose |
+|-----|------|---------|
+| `htmltest` | [htmltest](https://github.com/wjdp/htmltest) | HTML validity + image/alt checks and internal link integrity over `dist/` (deploy.yml), and external link checks over `dist/` (link-check.yml). |
+| `node` | Node.js LTS | Toolchain runtime. The authoritative pin is `.nvmrc` (`node-version-file`); this line is documentation. |
 
-| Key | Tool | Version | Purpose |
-|-----|------|---------|---------|
-| `htmltest` | [htmltest](https://github.com/wjdp/htmltest) | 0.17.0 | HTML structural validity and image alt-text checks (spec §9.2) and internal link integrity (spec §9.3). Two separate configs: `.htmltest.yml` (structural) and `.htmltest-links.yml` (links). |
-| `htmlq` | [htmlq](https://github.com/mgdm/htmlq) | 0.4.0 | CSS selector-based attribute extraction from HTML. Used by `scripts/check-seo.sh` to assert SEO meta tag presence and values (spec §9.4). |
-| `@lhci/cli` | [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) | 0.14.0 | Performance, LCP, CLS, FCP, and payload budget assertions against `public/` build output (spec §7.1). Minimum version supporting `staticDistDir` and the assertion keys in `lighthouserc.js`. |
-| `node` | Node.js (LTS) | 22 | Required for `@lhci/cli`. Pinned to major version 22 LTS (not floating `lts/*`) for reproducibility. Pin in `actions/setup-node@v4` step. |
+npm-managed tools — `@lhci/cli`, `eslint`, `typescript`, `tsx`, `vite`, `vite-react-ssg`, etc. — are
+pinned by `package-lock.json` (installed via `npm ci`), not here.
 
 ### `disclosure-blocklist.txt`
 
-Versioned list of prohibited terms for the private work disclosure scan (spec §9.6).
+Prohibited terms for the private-work disclosure scan (`scripts/check-disclosure.ts`). One term
+per line; `#` comments and blank lines ignored; case-insensitive substring match.
 
-- One term per line. Lines beginning with `#` are comments. Empty lines are ignored.
-- Scanned against `data/projects/*.toml` (pre-build, `internal.notes` and `internal.tech_stack` fields only) and `public/` rendered output (post-build).
-- **Maintenance rule:** Update this file in the same commit or PR as any new private work content added to `data/projects/` or `content/_index.md`.
-- Authoritative prohibited categories: spec/05-content.md §5.5 (client proper nouns, internal codenames, non-owner email addresses, internal URLs, unreleased tooling names).
+- Scanned **pre-build** over `src/data/` and **post-build** over `dist/`.
+- **Maintenance:** update in the same commit/PR as any new private-work content in `src/data/`.
 
-### `README.md`
+## CI gate sequence (`deploy.yml`)
 
-This file. Documents CI tool dependencies and version rationale.
+Pre-build: `npm ci` → `npm run typecheck` (`tsc --noEmit`) → `npm run lint` (ESLint, `--max-warnings 0`)
+→ `npm run validate:projects` (`scripts/validate-projects.ts`) → `npx tsx scripts/check-contact.ts`
+→ `npx tsx scripts/check-disclosure.ts src/data`.
 
-## Updating Tool Versions
+Build: `npm run build` (`vite-react-ssg build` → `dist/`), warnings-as-errors.
 
-When upgrading a pinned tool version:
+Post-build (over `dist/`): `npx tsx scripts/check-seo.ts dist/index.html` →
+`npx tsx scripts/check-disclosure.ts dist` → Google-verification checksum →
+`htmltest --conf .htmltest.yml dist` → `npx lhci autorun` (Lighthouse budget, `lighthouserc.cjs`).
 
-1. Update the version string in `versions.txt`.
-2. Test the new version locally by running the relevant CI step manually.
-3. Update this README if the tool's behavior or purpose has changed.
-4. For `htmltest`: verify `.htmltest.yml` and `.htmltest-links.yml` configs remain compatible with the new version.
-5. For `htmlq`: verify `scripts/check-seo.sh` selector syntax remains compatible.
-6. For `@lhci/cli`: verify `lighthouserc.js` assertion key names remain supported.
-7. For `node`: check `@lhci/cli` compatibility with the new Node.js major version before pinning.
+## Updating a pinned tool version
 
-## Python Dependency (`validate-projects.sh`)
-
-`scripts/validate-projects.sh` uses Python 3 with `tomllib` (Python 3.11+, stdlib) or `tomli` (Python 3.10 fallback, pip-installed). The `ubuntu-latest` GitHub Actions runner ships Python 3.12+ as of 2026, satisfying the `tomllib` path without pip install.
-
-If the runner image ships a Python version below 3.10 in the future, the script will hard-fail with a version assertion error. Remediation: add a `setup-python` step to the workflow pinning Python 3.12.
-
-Spec reference: spec/03-technical.md §3.6 (validate-projects.sh Python dependency rationale).
+1. Update the version in `versions.txt` (htmltest) or `package.json` + `package-lock.json` (npm tools).
+2. Run the relevant CI step locally to confirm compatibility.
+3. For `htmltest`: verify `.htmltest.yml` and `.htmltest-links.yml` still parse.
+4. For `@lhci/cli`: verify the `lighthouserc.cjs` assertion keys are still supported.

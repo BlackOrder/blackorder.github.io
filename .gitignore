@@ -8,3 +8,10 @@ spec/
 # OS files
 .DS_Store
 Thumbs.db
+.council/
+node_modules/
+dist/
+
+# Disclosure blocklist — terms are a CI secret (DISCLOSURE_BLOCKLIST), never committed (ADR-007).
+# Local copy kept for developer-run fallback of scripts/check-disclosure.ts.
+.ci/disclosure-blocklist.txt

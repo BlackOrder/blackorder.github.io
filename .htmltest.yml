@@ -1,10 +1,10 @@
-DirectoryPath: public
-CheckDoctype: false          # disabled: google78a83929b1057f91.html has no DOCTYPE by design; doctype is enforced by baseof.html template, not CI check
-CheckFavicon: false
+# htmltest — HTML validity + internal link integrity over the built output (dist/).
+DirectoryPath: "dist"
+CheckExternal: false
+CheckInternal: true
+CheckInternalHash: true
 CheckImages: true
-CheckLinks: false
-CheckScripts: false
-CheckMeta: false
-CheckDuplicateIDs: true
-IgnoreURLs:
-  - "^https://blackorder.github.io"
+CheckLinks: true
+EnforceHTTPS: false
+IgnoreDirectoryMissingTrailingSlash: true
+TestFilesConcurrently: true

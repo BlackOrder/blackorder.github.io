@@ -1,0 +1,60 @@
+/* Design tokens — single source of truth.
+   Authoritative values: docs/functional/behavior/visual-design.md § Design tokens. */
+:root {
+  /* Surface */
+  --color-bg-base: #0d0d0d;
+  --color-bg-surface: #141414;
+  --color-bg-elevated: #1c1c1c;
+  --color-bg-border: #2a2a2a;
+  /* Text */
+  --color-text-primary: #e8e8e8;
+  --color-text-secondary: #9a9a9a;
+  --color-text-muted: #555555; /* decorative only — fails AA for text */
+  --color-text-inverse: #0d0d0d;
+  /* Accent */
+  --color-accent-primary: #c9a84c;
+  --color-accent-primary-hover: #dfc070;
+  --color-accent-secondary: #5490ba;
+  --color-accent-muted: #3a3a2a;
+  /* Layout & spacing */
+  --nav-height: 3.5rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-16: 4rem;
+  /* Z-index */
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-skip-link: 300;
+  /* Font families */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Consolas', 'Menlo', monospace;
+  /* Type scale (1.25 Major Third from --text-base) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.563rem;
+  --text-2xl: 1.953rem;
+  --text-3xl: 2.441rem;
+  --text-hero: clamp(2.441rem, 4vw, 3.8rem);
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/cormorant-garamond-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cormorant-garamond-400.woff2') format('woff2');
+}

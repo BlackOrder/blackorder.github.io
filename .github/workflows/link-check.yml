@@ -20,29 +20,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          hugo-version: '0.123.0'
-          extended: true
+          node-version-file: .nvmrc
+          cache: npm
 
-      - name: Hugo build
+      - name: Build (Vite + SSG)
         run: |
           set -euo pipefail
-          hugo --minify --gc
+          npm ci
+          npm run build
 
       - name: Install htmltest
         run: |
           set -euo pipefail
-          HTMLTEST_VERSION=$(grep '^htmltest' .ci/versions.txt | cut -d= -f2)
+          HTMLTEST_VERSION=$(grep '^htmltest=' .ci/versions.txt | cut -d= -f2)
           curl -sSL "https://github.com/wjdp/htmltest/releases/download/v${HTMLTEST_VERSION}/htmltest_${HTMLTEST_VERSION}_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin
 
       - name: External link check (non-blocking)
         id: link-check
         continue-on-error: true
-        run: |
-          set -euo pipefail
-          htmltest --conf .htmltest-links.yml public/
+        run: htmltest --conf .htmltest-links.yml dist
 
       - name: Create issue on failure
         if: steps.link-check.outcome == 'failure'
@@ -50,10 +49,11 @@ jobs:
         with:
           script: |
             const date = new Date().toISOString().split('T')[0];
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Monthly link check failed — ${date}`,
-              body: `The monthly external link check detected broken or unreachable links.\n\nRun date: ${date}\n\nCheck the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\n**SLA:** Broken links must be resolved within 14 days of detection (spec §9.3).`,
+              body: `The monthly external link check detected broken or unreachable links.\n\nRun date: ${date}\n\nCheck the [workflow run](${runUrl}) for details.\n\n**SLA:** Broken links resolved within 14 days of detection.`,
               labels: ['link-check', 'maintenance'],
             });
