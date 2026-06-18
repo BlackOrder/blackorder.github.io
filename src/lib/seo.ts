@@ -6,7 +6,7 @@ export const SITE = {
   description:
     'Go backend engineer specializing in platform architecture, telecom infrastructure, and system integrations.',
   url: 'https://blackorder.dev',
-  ogImage: 'https://blackorder.dev/assets/branding/og-image.png',
+  ogImage: 'https://blackorder.dev/assets/branding/og-image.jpg',
 } as const;
 
 /* Homepage-only JSON-LD Person schema. */

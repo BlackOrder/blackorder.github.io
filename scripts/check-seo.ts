@@ -25,7 +25,7 @@ const failed = checks.filter(([, ok]) => !ok).map(([n]) => n);
    (behavior/build-deploy § SEO & discoverability). */
 const ogImageTag = /<meta[^>]+property=["']og:image["']/i.test(html);
 const twitterImageTag = /<meta[^>]+name=["']twitter:image["']/i.test(html);
-const ogAsset = join(dirname(file), 'assets', 'branding', 'og-image.png');
+const ogAsset = join(dirname(file), 'assets', 'branding', 'og-image.jpg');
 if (existsSync(ogAsset)) {
   if (!ogImageTag) failed.push('og:image (asset present — required)');
   if (!twitterImageTag) failed.push('twitter:image (asset present — required)');
