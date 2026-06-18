@@ -5,6 +5,11 @@ CheckInternal: true
 CheckInternalHash: true
 CheckImages: true
 CheckLinks: true
+# Google Search Console verification file is a one-line token, not an HTML document.
+CheckDoctype: false
+# Decorative logos (nav, footer) correctly use alt="" + aria-hidden (WCAG); the labelled
+# hero logo carries the accessible name. Don't fail on intentional empty alt.
+IgnoreAltMissing: true
 EnforceHTTPS: false
 IgnoreDirectoryMissingTrailingSlash: true
 TestFilesConcurrently: true
