@@ -20,7 +20,7 @@ body {
   background: var(--color-bg-base);
   -webkit-font-smoothing: antialiased;
 }
-/* Ambient arabesque texture over the dark canvas (tile-ready bg-mask2.webp) — subtle, fixed,
+/* Ambient arabesque texture over the dark canvas (tile-ready bg-mask.webp) — subtle, fixed,
    GPU-cheap, no CLS. Sits above the base colour, below all content; opaque panels (cards, surface
    sections) cover it so they read as lifted, while open areas (hero, default sections) carry the texture. */
 body::before {
@@ -28,7 +28,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: url('/branding/bg-mask2.webp') repeat;
+  background: url('/branding/bg-mask.webp') repeat;
   background-size: 208px auto;
   opacity: 0.12;
   pointer-events: none;
