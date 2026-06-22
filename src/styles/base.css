@@ -28,9 +28,9 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: url('/branding/bg-mask.webp') repeat;
+  background: url('/branding/bg-mask2.webp') repeat;
   background-size: 208px auto;
-  opacity: 0.35;
+  opacity: 0.12;
   pointer-events: none;
 }
 
