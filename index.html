@@ -3,17 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Apply the persisted / preferred theme before first paint (no flash of the wrong theme).
-         Dark is the default; see behavior/visual-design § Color modes. -->
-    <script>
-      (function () {
-        try {
-          var t = localStorage.getItem('theme');
-          if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light-ivory' : 'dark';
-          if (t && t !== 'dark') document.documentElement.setAttribute('data-theme', t);
-        } catch (e) {}
-      })();
-    </script>
     <!-- title, description, color-scheme, canonical, OG/Twitter, JSON-LD are owned by <Head> in
          src/App.tsx (single source of truth — avoids duplicate tags in the prerendered HTML). -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
