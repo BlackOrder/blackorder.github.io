@@ -7,8 +7,9 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer__inner">
         <a className="footer__logo" href="#hero" aria-label="BlackOrder — home">
-          <img src="/branding/logo-badge.webp" alt="" aria-hidden="true" width={28} height={28} />
+          <img src="/branding/logo-wordmark.webp" alt="" aria-hidden="true" width={180} height={36} />
         </a>
+        <span className="footer__rule" aria-hidden="true" />
         <p className="footer__copy">
           © {year} BlackOrder ·{' '}
           <a href={contact.github} rel="noopener noreferrer" target="_blank">
