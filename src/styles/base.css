@@ -30,7 +30,7 @@ body::before {
   z-index: -1;
   background: url('/branding/bg-mask.webp') repeat;
   background-size: 208px auto;
-  opacity: 0.16;
+  opacity: var(--tex-opacity, 1);
   pointer-events: none;
 }
 

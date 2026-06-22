@@ -3,6 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- TEMP texture calibration: ?tex=0..1 overrides the ambient texture opacity live (remove once tuned). -->
+    <script>
+      (function () {
+        try {
+          var p = new URLSearchParams(location.search).get('tex');
+          if (p !== null && p !== '') document.documentElement.style.setProperty('--tex-opacity', p);
+        } catch (e) {}
+      })();
+    </script>
     <!-- title, description, color-scheme, canonical, OG/Twitter, JSON-LD are owned by <Head> in
          src/App.tsx (single source of truth — avoids duplicate tags in the prerendered HTML). -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
