@@ -20,6 +20,19 @@ body {
   background: var(--color-bg-base);
   -webkit-font-smoothing: antialiased;
 }
+/* Ambient arabesque texture over the dark canvas (tile-ready bg-mask.webp) — subtle, fixed,
+   GPU-cheap, no CLS. Sits above the base colour, below all content; opaque panels (cards, surface
+   sections) cover it so they read as lifted, while open areas (hero, default sections) carry the texture. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url('/branding/bg-mask.webp') repeat;
+  background-size: 208px auto;
+  opacity: 0.06;
+  pointer-events: none;
+}
 
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.25; font-weight: 400; }
 a { color: var(--color-accent-secondary); text-decoration: none; }
@@ -101,10 +114,10 @@ img { max-width: 100%; display: block; }
   min-height: calc(100svh - var(--nav-height));
   padding-top: var(--nav-height);
   /* Subtle, GPU-cheap ambient sheen (behavior/visual-design § Motion) — no canvas, no CLS,
-     token-derived gold at low opacity over the base surface; resolves to bg-base everywhere else. */
+     token-derived gold at low opacity. Background is left open so the ambient arabesque texture
+     (body::before) reads through the hero, with the gold sheen layered over it. */
   background:
-    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--color-accent-primary) 6%, transparent), transparent 60%),
-    var(--color-bg-base);
+    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--color-accent-primary) 7%, transparent), transparent 60%);
 }
 .hero__content { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 1.25rem; align-items: flex-start; }
 .hero__logo img { height: 4.5rem; width: auto; }
@@ -123,7 +136,7 @@ img { max-width: 100%; display: block; }
 /* Specialties */
 .specialties__grid { display: grid; gap: var(--space-8); grid-template-columns: 1fr; }
 @media (min-width: 48rem) { .specialties__grid { grid-template-columns: 1fr 1fr; } }
-.specialty { border: 1px solid var(--color-bg-border); border-radius: 6px; padding: var(--space-6); background: var(--color-bg-base); }
+.specialty { border: 1px solid var(--color-bg-border); border-radius: 6px; padding: var(--space-6); background: transparent; }
 .specialty h3 { font-size: var(--text-lg); margin-bottom: 0.5rem; }
 .specialty p { color: var(--color-text-secondary); }
 
