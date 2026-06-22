@@ -8,10 +8,23 @@ spec/
 # OS files
 .DS_Store
 Thumbs.db
-.council/
 node_modules/
 dist/
 
 # Disclosure blocklist — terms are a CI secret (DISCLOSURE_BLOCKLIST), never committed (ADR-007).
 # Local copy kept for developer-run fallback of scripts/check-disclosure.ts.
 .ci/disclosure-blocklist.txt
+
+# >>> council-internal transient artifacts >>>
+# Per-run scratch state + workspace-level sentinels — never committed.
+# All transient council artifacts (contributions/, .session-state.json,
+# .adjourn-snapshot.json, .lifecycle-complete, .route-log, .preserve-runs,
+# .production-mode, .reevaluation-marker, .inbox/) live under .council/.
+# Forensic council artifacts under docs/council/ (report.md,
+# execution-log.md, deliberations/, INDEX.md, research/, members/) ARE
+# committed via build's selective git-add (build/SKILL.md SBdX3).
+# This block is plugin-managed: do not add custom council entries here
+# OR elsewhere in .gitignore; the manage-gitignore.sh script strips any
+# orphan .council or docs/council pattern on every adjourn entry.
+.council/
+# <<< council-internal transient artifacts <<<
